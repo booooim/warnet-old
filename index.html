@@ -307,6 +307,67 @@
             }
         }
 
+        /* Mobile Zoom Button */
+        .mobile-zoom-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 2px solid #0bfdfc;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 9998;
+            user-select: none;
+            transition: all 0.2s ease;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        .mobile-zoom-button:active {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(0.95);
+        }
+
+        /* Show zoom button only on mobile portrait */
+        @media screen and (orientation: portrait) and (max-width: 768px) {
+            .mobile-zoom-button {
+                display: flex;
+            }
+        }
+
+        /* Zoom levels */
+        .zoom-level-1 {
+            transform: scale(0.9);
+            transform-origin: top left;
+        }
+
+        .zoom-level-2 {
+            transform: scale(0.8);
+            transform-origin: top left;
+        }
+
+        .zoom-level-3 {
+            transform: scale(0.7);
+            transform-origin: top left;
+        }
+
+        .zoom-level-4 {
+            transform: scale(0.5);
+            transform-origin: top left;
+        }
+
+        .zoom-level-0 {
+            transform: scale(1);
+            transform-origin: top left;
+        }
+
 
 
         /* Windows XP Desktop Styles */
@@ -898,11 +959,15 @@
    </div>
    <h2>Putar Layar Anda</h2>
    <p>Untuk pengalaman terbaik, silakan putar perangkat Anda ke mode landscape (horizontal).</p>
+  </div><!-- Mobile Zoom Button -->
+  <div class="mobile-zoom-button" id="mobileZoomButton">
+   -
   </div>
   <script>
     let selectedButton = null;
     let musicPlaying = false;
     let backgroundMusic = null;
+    let currentZoomLevel = 0; // 0 = normal, 1-4 = zoom out levels
 
     // Initialize background music
     function initMusic() {
@@ -922,6 +987,28 @@
           console.log('Could not play music:', error);
         });
         musicPlaying = true;
+      }
+    }
+
+    // Mobile zoom functionality
+    function toggleZoom() {
+      currentZoomLevel++;
+      if (currentZoomLevel > 4) {
+        currentZoomLevel = 0; // Reset to normal after 5th click
+      }
+      
+      // Remove all zoom classes
+      document.body.classList.remove('zoom-level-0', 'zoom-level-1', 'zoom-level-2', 'zoom-level-3', 'zoom-level-4');
+      
+      // Apply current zoom level
+      document.body.classList.add(`zoom-level-${currentZoomLevel}`);
+      
+      // Update button text based on zoom level
+      const zoomButton = document.getElementById('mobileZoomButton');
+      if (currentZoomLevel === 0) {
+        zoomButton.textContent = '-'; // Normal size, ready to zoom out
+      } else {
+        zoomButton.textContent = '+'; // Zoomed out, ready to zoom in or continue zooming out
       }
     }
 
@@ -1700,7 +1787,15 @@
       // Add click handler to start button
       document.getElementById('startButton').addEventListener('click', startGame);
       
-
+      // Add click handler to mobile zoom button
+      const mobileZoomButton = document.getElementById('mobileZoomButton');
+      if (mobileZoomButton) {
+        mobileZoomButton.addEventListener('click', toggleZoom);
+        mobileZoomButton.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          toggleZoom();
+        });
+      }
       
       // Check orientation on load and resize
       checkOrientation();
@@ -1784,5 +1879,5 @@
       });
     }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f8079ec2d96d1c',t:'MTc2MzMwNzAyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f81c65c7551333',t:'MTc2MzMwNzg3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
