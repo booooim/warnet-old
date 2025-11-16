@@ -1,0 +1,1788 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing Explorer Mockup</title>
+  <style>
+        /* Palet Warna:
+         * Biru Terang: #0bfdfc
+         * Abu-abu Terang (Button Background): #e5e5e5
+         * Putih (Text/Form Background): #ffffff
+         * Hitam (Text): #000000
+         * Biru untuk Kontak: #0000ff (tambahan)
+         * Hijau untuk DeskPro: #00ff00 (tambahan)
+         */
+
+        body {
+            font-family: Verdana, Arial, sans-serif;
+            font-weight: 300;
+            margin: 0;
+            padding: 20px;
+            /* DIUBAH: Menambahkan background website */
+            background-image: url('img.png');
+            background-size: cover;
+            background-attachment: fixed;
+            
+            display: flex;
+            gap: 20px;
+            box-sizing: border-box;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        /* Preload background image */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* --- Bagian 1: Antarmuka Tombol/Opsi (Warna Cyan) --- */
+        .interface-mockup {
+            background-color: #0bfdfc;
+            padding: 5px 10px 5px 10px; /* Padding atas-bawah disesuaikan untuk alignment */
+            display: flex;
+            gap: 15px; /* Gap dikembalikan */
+            width: 380px; /* Lebar dikembalikan seperti sebelumnya */
+            border: 2px solid #000000;
+            box-sizing: border-box;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px; /* Gap diperbesar untuk jarak yang lebih baik */
+            margin-top: 5px; /* Jarak dari atas disesuaikan */
+            margin-bottom: 5px; /* Jarak ke bawah disesuaikan */
+        }
+
+        .button {
+            background-color: #e5e5e5;
+            color: #000000;
+            padding: 3px 15px; /* Padding sedikit lebih besar */
+            border: 2px outset #e5e5e5;
+            border-bottom: 1px solid #000000; /* Garis bawah untuk semua tombol */
+            text-align: center;
+            font-size: 13px; /* Font size dikembalikan seperti sebelumnya */
+            font-family: Verdana, Arial, sans-serif;
+            cursor: pointer;
+            font-weight: 300;
+            line-height: 1.1; /* Line height sedikit lebih besar */
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px; /* Fixed height yang tidak terlalu pendek */
+            max-height: 24px; /* Maksimal tinggi */
+            text-decoration: underline;
+        }
+
+        .button:active {
+            border: 2px inset #e5e5e5;
+            border-bottom: 1px solid #000000;
+            transform: translateY(2px);
+            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
+            background-color: #d0d0d0;
+        }
+
+        .button.selected {
+            background-color: #d0d0d0;
+            border: 2px inset #e5e5e5;
+            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .button span {
+            text-decoration: underline;
+        }
+
+        .button.inactive {
+            color: #888888;
+        }
+
+        .start-button {
+            background-color: #e5e5e5;
+            color: #000000;
+            padding: 3px 15px;
+            border: 2px outset #e5e5e5;
+            border-bottom: 1px solid #000000;
+            text-align: center;
+            font-size: 13px;
+            font-family: Verdana, Arial, sans-serif;
+            cursor: pointer;
+            font-weight: 300;
+            line-height: 1.1;
+            transition: all 0.1s ease;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            max-height: 24px;
+            text-decoration: underline;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 10px;
+            width: 100px;
+        }
+
+        .interface-container {
+            position: relative;
+        }
+
+        .start-button:active {
+            border: 2px inset #e5e5e5;
+            border-bottom: 1px solid #000000;
+            transform: translateY(2px);
+            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.3);
+            background-color: #d0d0d0;
+        }
+
+        .start-button.show {
+            display: flex;
+        }
+
+        .time-warning {
+            color: #000000;
+            font-size: 13px;
+            padding-top: 5px; /* Jarak atas disesuaikan dengan button-grid */
+            padding-bottom: 5px; /* Jarak bawah disesuaikan */
+            font-family: Verdana, Arial, sans-serif;
+            font-weight: 300;
+            line-height: 1.2;
+        }
+
+        .radio-option {
+            margin-bottom: 3px; /* DIUBAH: Jarak vertikal lebih kecil */
+            display: flex;
+            align-items: center;
+            font-family: Verdana, Arial, sans-serif;
+            font-weight: 300;
+            font-size: 13px;
+            line-height: 1.2;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 5px;
+            transform: scale(1.2);
+            /* DIUBAH: Membuat lingkaran pemilihan (radio) hitam */
+            accent-color: #000000; 
+        }
+
+        .time-input {
+            width: 40px;
+            height: 18px;
+            border: none;
+            background-color: #ffffff;
+            margin-left: 5px;
+            text-align: center;
+            font-weight: normal;
+            line-height: 18px;
+        }
+
+        /* --- Bagian 2: Header dan Kontak (BillingExplorer.Com) --- */
+
+        .header-mockup {
+            background-color: #ffffff;
+            width: 500px; /* Lebar dikembalikan seperti sebelumnya */
+            padding-bottom: 5px; /* Padding bawah disesuaikan untuk alignment */
+            border: 2px solid #000000;
+            box-sizing: border-box;
+        }
+
+        .header-bar {
+            background: linear-gradient(45deg, #0000ff 0%, #000099 25%, #0000ff 50%, #000099 75%, #0000ff 100%);
+            background-size: 400% 400%;
+            animation: gradientMove 8s ease-in-out infinite;
+            padding: 5px 10px 5px 10px; /* Padding atas-bawah disesuaikan untuk alignment */
+            position: relative;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header-bar h1 {
+            color: #0bfdfc;
+            font-size: 20px;
+            margin: 0;
+            font-weight: 300;
+            font-family: Verdana, Arial, sans-serif;
+            margin-bottom: 2px;
+        }
+
+        .header-bar h2 {
+            color: #00ff00;
+            font-size: 16px;
+            margin: 0;
+            font-weight: 300;
+            font-family: Verdana, Arial, sans-serif;
+            margin-left: 25%;
+        }
+
+        .contact-info {
+            padding: 5px 10px; /* Padding atas-bawah disesuaikan untuk alignment */
+            font-size: 11px; /* Diperkecil untuk compact */
+            line-height: 1.3;
+            color: #0000ff;
+            font-weight: 300;
+            font-family: Verdana, Arial, sans-serif;
+        }
+
+        .contact-info .unit-net {
+            font-size: 13px; /* Diperkecil untuk compact */
+            font-weight: bold;
+            text-decoration: none;
+            margin-bottom: 2px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .contact-info a {
+            color: #0000ff;
+            text-decoration: none;
+        }
+
+        /* Landscape Notification for Mobile */
+        .landscape-notification {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            font-family: Verdana, Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .landscape-notification.show {
+            display: flex;
+        }
+
+        .landscape-notification .rotate-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: rotatePhone 2s ease-in-out infinite;
+        }
+
+        @keyframes rotatePhone {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(90deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .landscape-notification h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #0bfdfc;
+        }
+
+        .landscape-notification p {
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 300px;
+        }
+
+        /* Hide notification on landscape or desktop */
+        @media screen and (orientation: landscape), screen and (min-width: 769px) {
+            .landscape-notification {
+                display: none !important;
+            }
+        }
+
+
+
+        /* Windows XP Desktop Styles */
+        .windows-desktop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+        }
+
+
+
+        .desktop-icon {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+            user-select: none;
+        }
+
+        .desktop-icon:hover {
+            background-color: rgba(49, 106, 197, 0.3);
+            border: 1px dotted rgba(49, 106, 197, 0.8);
+        }
+
+        .desktop-icon.selected {
+            background-color: rgba(49, 106, 197, 0.5);
+            border: 1px dotted rgba(49, 106, 197, 1);
+        }
+
+        .desktop-icon .icon-image {
+            font-size: 64px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .desktop-icon .icon-label {
+            font-size: 14px;
+            color: white;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            font-family: 'Tahoma', sans-serif;
+            line-height: 1.2;
+            word-wrap: break-word;
+            max-width: 130px;
+        }
+
+        .desktop-icon.refreshing {
+            animation: refreshHide 0.2s ease-in-out;
+        }
+
+        @keyframes refreshHide {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Windows XP Taskbar */
+        .windows-taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, #245edb 0%, #1941a5 3%, #1237a0 6%, #1e3f9a 10%, #3054c5 14%, #4368d2 19%, #1e3f9a 63%, #1237a0 81%, #1941a5 88%, #245edb 100%);
+            border-top: 1px solid #0d2c6c;
+            display: flex;
+            align-items: center;
+            z-index: 1001;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
+        }
+
+        .start-button-xp {
+            height: 30px;
+            background: linear-gradient(to bottom, #3c8d3c 0%, #2d6b2d 50%, #1e4a1e 100%);
+            border: 1px outset #4a9a4a;
+            border-radius: 0 8px 8px 0;
+            margin: 2px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-family: 'Tahoma', sans-serif;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            min-width: 60px;
+        }
+
+        .start-button-xp:hover {
+            background: linear-gradient(to bottom, #4a9a4a 0%, #3c8d3c 50%, #2d6b2d 100%);
+        }
+
+        .start-button-xp:active {
+            border: 1px inset #4a9a4a;
+            background: linear-gradient(to bottom, #2d6b2d 0%, #1e4a1e 50%, #0f2f0f 100%);
+        }
+
+        .start-text::before {
+            content: "";
+            background-image: url('https://images.seeklogo.com/logo-png/26/2/windows-xp-icon-logo-png_seeklogo-267395.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .taskbar-buttons {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+            gap: 2px;
+        }
+
+        .taskbar-button {
+            height: 28px;
+            background: linear-gradient(to bottom, #eff4ff 0%, #d0e1ff 50%, #b8d0ff 100%);
+            border: 1px outset #c0c0c0;
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+            color: #000;
+            cursor: pointer;
+            max-width: 160px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .taskbar-button.active {
+            background: linear-gradient(to bottom, #b8d0ff 0%, #9bb8e8 50%, #7a9dd1 100%);
+            border: 1px inset #c0c0c0;
+        }
+
+        .system-tray {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(to bottom, #eff4ff 0%, #d0e1ff 50%, #b8d0ff 100%);
+            border: 1px inset #c0c0c0;
+            height: 28px;
+            margin: 2px;
+            padding: 0 8px;
+            gap: 8px;
+        }
+
+        .tray-icons {
+            display: flex;
+            gap: 4px;
+            font-size: 12px;
+        }
+
+        .clock {
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+            color: #000;
+            font-weight: normal;
+            min-width: 35px;
+            text-align: center;
+        }
+
+        /* Windows XP Error Dialog */
+        .error-dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            background: linear-gradient(to bottom, #0054e3 0%, #0054e3 22px, #ece9d8 22px, #ece9d8 100%);
+            border: 2px outset #c0c0c0;
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+            z-index: 2000;
+            font-family: 'Tahoma', sans-serif;
+            display: none;
+        }
+
+        .error-dialog.show {
+            display: block;
+        }
+
+        .error-title-bar {
+            height: 22px;
+            background: linear-gradient(to bottom, #0054e3 0%, #0054e3 100%);
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            justify-content: space-between;
+        }
+
+        .error-close-btn {
+            width: 16px;
+            height: 14px;
+            background: linear-gradient(to bottom, #ff6b6b 0%, #cc0000 100%);
+            border: 1px outset #ff6b6b;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error-close-btn:active {
+            border: 1px inset #ff6b6b;
+        }
+
+        .error-content {
+            padding: 15px;
+            background: #ece9d8;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .error-icon {
+            font-size: 32px;
+            color: #ff0000;
+        }
+
+        .error-message {
+            font-size: 11px;
+            color: #000;
+            line-height: 1.4;
+        }
+
+        .error-buttons {
+            padding: 10px 15px 15px 15px;
+            background: #ece9d8;
+            text-align: center;
+        }
+
+        .error-ok-btn {
+            background: linear-gradient(to bottom, #ece9d8 0%, #d4d0c8 100%);
+            border: 1px outset #c0c0c0;
+            padding: 3px 20px;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .error-ok-btn:active {
+            border: 1px inset #c0c0c0;
+        }
+
+        /* Start Menu Styles */
+        .start-menu {
+            position: fixed;
+            bottom: 40px;
+            left: 0;
+            width: 400px;
+            height: 500px;
+            background: linear-gradient(to bottom, #245edb 0%, #1941a5 100%);
+            border: 2px outset #c0c0c0;
+            border-bottom: none;
+            z-index: 2000;
+            display: none;
+            font-family: 'Tahoma', sans-serif;
+        }
+
+        .start-menu.show {
+            display: flex;
+        }
+
+        .start-menu-header {
+            background: linear-gradient(to right, #0054e3 0%, #245edb 100%);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .start-menu-header::before {
+            content: "👤";
+            font-size: 32px;
+            margin-right: 10px;
+        }
+
+        .start-menu-main {
+            background: #ece9d8;
+            height: calc(100% - 60px);
+            display: flex;
+            width: 100%;
+        }
+
+        .start-menu-left {
+            flex: 1;
+            padding: 10px;
+            border-right: 1px solid #c0c0c0;
+        }
+
+        .start-menu-right {
+            width: 150px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .applications-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #c0c0c0;
+        }
+
+        .application-item {
+            padding: 4px 8px;
+            color: #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            transition: background-color 0.2s ease;
+            margin-bottom: 2px;
+        }
+
+        .application-item:hover {
+            background-color: #316ac5;
+            color: white;
+        }
+
+        .application-item::before {
+            margin-right: 8px;
+            font-size: 14px;
+            width: 16px;
+        }
+
+        .start-menu-item {
+            padding: 8px 12px;
+            color: #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            transition: background-color 0.2s ease;
+            margin-bottom: 2px;
+        }
+
+        .start-menu-item:hover {
+            background-color: #316ac5;
+            color: white;
+        }
+
+        .start-menu-item::before {
+            margin-right: 10px;
+            font-size: 16px;
+            width: 20px;
+        }
+
+        .start-menu-separator {
+            height: 1px;
+            background: #c0c0c0;
+            margin: 5px 0;
+        }
+
+        /* Context Menu Styles */
+        .context-menu {
+            position: fixed;
+            background: #ece9d8;
+            border: 2px outset #c0c0c0;
+            min-width: 150px;
+            z-index: 2001;
+            display: none;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+        }
+
+        .icon-context-menu {
+            position: fixed;
+            background: #ece9d8;
+            border: 2px outset #c0c0c0;
+            min-width: 180px;
+            z-index: 2001;
+            display: none;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 11px;
+        }
+
+        .icon-context-menu.show {
+            display: block;
+        }
+
+        .context-menu.show {
+            display: block;
+        }
+
+        .context-menu-item {
+            padding: 4px 20px 4px 30px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .context-menu-item:hover {
+            background-color: #316ac5;
+            color: white;
+        }
+
+        .context-menu-item.disabled {
+            color: #888;
+            cursor: default;
+        }
+
+        .context-menu-item.disabled:hover {
+            background-color: transparent;
+            color: #888;
+        }
+
+        .context-menu-separator {
+            height: 1px;
+            background: #c0c0c0;
+            margin: 2px 0;
+        }
+
+        /* Selection Box */
+        .selection-box {
+            position: absolute;
+            border: 1px dotted #316ac5;
+            background: rgba(49, 106, 197, 0.1);
+            pointer-events: none;
+            display: none;
+        }
+
+        /* Shutdown Screen */
+        .shutdown-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            color: white;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 24px;
+            z-index: 3000;
+        }
+
+        .shutdown-screen.show {
+            display: flex;
+        }
+
+        .boot-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000 url('https://upload.wikimedia.org/wikipedia/commons/8/8a/Windows_XP_Professional_boot.png') no-repeat center center;
+            background-size: contain;
+            display: none;
+            z-index: 3000;
+        }
+
+        .boot-screen.show {
+            display: block;
+        }
+
+        /* Application Image Overlay */
+        .app-image-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3001;
+            cursor: pointer;
+            pointer-events: none;
+        }
+
+        .app-image-overlay.show {
+            display: flex;
+            pointer-events: auto;
+        }
+
+        .app-image-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border: 2px solid #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            cursor: pointer;
+        }
+
+    </style>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+    </style>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="interface-container">
+   <div class="interface-mockup">
+    <div class="button-grid">
+     <div class="button"><span>Personal</span>
+     </div>
+     <div class="button inactive"><span>Group</span>
+     </div>
+     <div class="button inactive">
+      Game
+     </div>
+     <div class="button"><span>Paket</span>
+     </div>
+     <div class="button inactive">
+      Member
+     </div>
+     <div class="button inactive">
+      Pre-Paid
+     </div>
+     <div class="button"><span>Admin #4</span>
+     </div>
+     <div class="button"><span>Panduan</span>
+     </div>
+    </div>
+    <div class="time-warning">
+     WS - 1 <br>
+      Time Warning 
+     <div class="radio-option">
+      <input type="radio" id="tidak" name="time-warning" checked> <label for="tidak">Tidak (No)</label>
+     </div>
+     <div class="radio-option">
+      <input type="radio" id="menit30" name="time-warning"> <label for="menit30">Menit 30</label>
+     </div>
+     <div class="radio-option">
+      <input type="radio" id="menit60" name="time-warning"> <label for="menit60">Menit 60</label>
+     </div>
+     <div class="radio-option">
+      <input type="radio" id="menit_custom" name="time-warning"> <label for="menit_custom">Menit</label> <input type="text" class="time-input" value="45">
+     </div>
+    </div>
+   </div>
+   <div class="start-button" id="startButton"><span>Mulai</span>
+   </div>
+  </div>
+  <div class="header-mockup">
+   <div class="header-bar">
+    <h1>BillingExplorer.Com</h1>
+    <h2>DeskPro6 2007</h2>
+   </div>
+   <div class="contact-info">
+    <div class="unit-net">
+     Unit@.net
+    </div>
+    <div>
+     JL. H. AIP No. 2C RT. 04 / 0 BEKASI 0218891455
+    </div>
+    <div>
+     - <a href="http://www.billingexplorer.com" target="_blank">http://www.billingexplorer.com</a>
+    </div>
+   </div>
+  </div><!-- Landscape Notification for Mobile -->
+  <div class="landscape-notification" id="landscapeNotification">
+   <div class="rotate-icon">
+    📱
+   </div>
+   <h2>Putar Layar Anda</h2>
+   <p>Untuk pengalaman terbaik, silakan putar perangkat Anda ke mode landscape (horizontal).</p>
+  </div>
+  <script>
+    let selectedButton = null;
+    let musicPlaying = false;
+    let backgroundMusic = null;
+
+    // Initialize background music
+    function initMusic() {
+      try {
+        backgroundMusic = new Audio('music.m4a');
+        backgroundMusic.loop = true;
+        backgroundMusic.volume = 0.5;
+      } catch (error) {
+        console.log('Music file not available');
+      }
+    }
+
+    // Play background music
+    function playMusic() {
+      if (backgroundMusic && !musicPlaying) {
+        backgroundMusic.play().catch(error => {
+          console.log('Could not play music:', error);
+        });
+        musicPlaying = true;
+      }
+    }
+
+    // Button selection functionality
+    function selectButton(button) {
+      // Remove selection from all buttons
+      document.querySelectorAll('.button').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      
+      // Add selection to clicked button
+      button.classList.add('selected');
+      selectedButton = button;
+      
+      // Paket button doesn't trigger any special action anymore
+      
+      // Show start button
+      const startButton = document.getElementById('startButton');
+      startButton.classList.add('show');
+      
+      // Play music on first selection
+      if (!musicPlaying) {
+        playMusic();
+      }
+    }
+
+    // Change buttons to packet mode
+    function changeToPacketMode() {
+      const buttons = document.querySelectorAll('.button');
+      const packetLabels = ['Paket 1', 'Paket 2', 'Paket 3', 'Paket 4', 'Paket 5', 'Paket 6', 'Paket 7', 'Paket 8'];
+      
+      buttons.forEach((button, index) => {
+        if (index < packetLabels.length) {
+          const span = button.querySelector('span');
+          if (span) {
+            span.textContent = packetLabels[index];
+          } else {
+            button.textContent = packetLabels[index];
+          }
+          button.classList.remove('inactive');
+        }
+      });
+    }
+
+    // Start button functionality
+    function startGame() {
+      // Hide elements immediately without animation
+      const interfaceContainer = document.querySelector('.interface-container');
+      const headerMockup = document.querySelector('.header-mockup');
+      
+      interfaceContainer.style.display = 'none';
+      headerMockup.style.display = 'none';
+      
+      // Change background immediately without transition
+      document.body.style.transition = 'none';
+      document.body.style.backgroundImage = 'url("background.jpg")';
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundAttachment = 'fixed';
+      document.body.style.padding = '0';
+      document.body.style.display = 'block';
+      
+      // Create Windows XP desktop immediately
+      createWindowsXPDesktop();
+    }
+
+    // Create Windows XP Desktop
+    function createWindowsXPDesktop() {
+      // Create desktop container
+      const desktop = document.createElement('div');
+      desktop.className = 'windows-desktop';
+      
+      // Create desktop icons - standard layout for all devices
+      const icons = [
+        { name: 'My Computer', icon: 'https://www.iconarchive.com/download/i47362/icons-land/vista-hardware-devices/Computer.ico', x: 30, y: 30 },
+        { name: 'Recycle Bin', icon: '🗑️', x: 30, y: 160 },
+        { name: 'My Documents', icon: '📁', x: 30, y: 290 },
+        { name: 'Internet Explorer', icon: 'https://1000logos.net/wp-content/uploads/2020/08/Internet-Explorer-Logo-2005.png', x: 30, y: 420 },
+        { name: 'Microsoft Word', icon: 'https://1000logos.net/wp-content/uploads/2020/08/Microsoft-Word-Emblem-1.jpg', x: 180, y: 30 },
+        { name: 'Microsoft Excel', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Office_Excel_2007_logo.svg', x: 180, y: 160 },
+        { name: 'Paint', icon: '🎨', x: 180, y: 290 },
+        { name: 'Winamp', icon: 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Winamp-logo.svg', x: 180, y: 420 },
+        { name: 'Point Blank', icon: 'https://play-lh.googleusercontent.com/IGOlY-TMU0cGW_I8EFKBkLACxPLu1TQqbqaqx7NUsGMyjNWIO1NdhwdBrq-71pUAHw', x: 330, y: 30 },
+        { name: 'Lost Saga', icon: 'https://lostsaga.xyz/android-chrome-512x512.png', x: 330, y: 160 },
+        { name: 'Smadav', icon: 'https://images.seeklogo.com/logo-png/32/2/smadav-logo-png_seeklogo-324012.png', x: 330, y: 290 },
+        { name: 'Calculator', icon: 'https://files.softicons.com/download/system-icons/refresh-cl-icons-by-tpdk/png/256/Calc.png', x: 330, y: 420 }
+      ];
+      
+      icons.forEach(iconData => {
+        const iconElement = document.createElement('div');
+        iconElement.className = 'desktop-icon';
+        iconElement.style.left = iconData.x + 'px';
+        iconElement.style.top = iconData.y + 'px';
+        if (iconData.icon.startsWith('http')) {
+          iconElement.innerHTML = `
+            <div class="icon-image"><img src="${iconData.icon}" alt="${iconData.name}" width="64" height="64" onerror="this.style.display='none'; this.parentElement.innerHTML='❓';" /></div>
+            <div class="icon-label">${iconData.name}</div>
+          `;
+        } else {
+          iconElement.innerHTML = `
+            <div class="icon-image">${iconData.icon}</div>
+            <div class="icon-label">${iconData.name}</div>
+          `;
+        }
+        
+        // Add double-click event listener for desktop and touch handling for mobile
+        let touchTime = 0;
+        let touchCount = 0;
+        
+        iconElement.addEventListener('dblclick', function() {
+          showAppImage(iconData.name);
+        });
+        
+        // Touch handling for mobile devices
+        iconElement.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          const currentTime = new Date().getTime();
+          const tapLength = currentTime - touchTime;
+          
+          if (tapLength < 500 && tapLength > 0) {
+            // Double tap detected
+            showAppImage(iconData.name);
+            touchCount = 0;
+          } else {
+            // Single tap
+            touchCount = 1;
+            setTimeout(() => {
+              if (touchCount === 1) {
+                // Single tap action - select icon
+                e.stopPropagation();
+                selectedIcons.forEach(icon => {
+                  if (icon !== iconElement) icon.classList.remove('selected');
+                });
+                selectedIcons = [iconElement];
+                iconElement.classList.add('selected');
+              }
+              touchCount = 0;
+            }, 300);
+          }
+          touchTime = currentTime;
+        });
+        
+        // Touch end handler for mobile
+        iconElement.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+        
+        desktop.appendChild(iconElement);
+      });
+      
+      // Create taskbar
+      const taskbar = document.createElement('div');
+      taskbar.className = 'windows-taskbar';
+      taskbar.innerHTML = `
+        <div class="start-button-xp" id="startButtonXP">
+          <span class="start-text">Start</span>
+        </div>
+        <div class="taskbar-buttons">
+          <div class="taskbar-button active" id="billingExplorerTaskbar">Billing Explorer</div>
+        </div>
+        <div class="system-tray">
+          <div class="tray-icons">
+            <span>🔊</span>
+            <span>📶</span>
+            <span>🔋</span>
+          </div>
+          <div class="clock">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+        </div>
+      `;
+      
+      // Create Start Menu
+      const startMenu = document.createElement('div');
+      startMenu.className = 'start-menu';
+      startMenu.innerHTML = `
+        <div style="display: flex; flex-direction: column; width: 100%; height: 100%;">
+          <div class="start-menu-header">
+            Boim
+          </div>
+          <div class="start-menu-main">
+            <div class="start-menu-left">
+              <div class="applications-title">All Applications</div>
+              <div class="application-item">💻 My Computer</div>
+              <div class="application-item">🗑️ Recycle Bin</div>
+              <div class="application-item">📁 My Documents</div>
+              <div class="application-item">🌐 Internet Explorer</div>
+              <div class="application-item">📝 Microsoft Word</div>
+              <div class="application-item">📊 Microsoft Excel</div>
+              <div class="application-item">🎨 Paint</div>
+              <div class="application-item">🎵 Winamp</div>
+              <div class="application-item">🎮 Point Blank</div>
+              <div class="application-item">⚔️ Lost Saga</div>
+              <div class="application-item">🛡️ Smadav</div>
+              <div class="application-item">🧮 Calculator</div>
+            </div>
+            <div class="start-menu-right">
+              <div style="flex: 1;"></div>
+              <div style="border-top: 1px solid #c0c0c0; padding-top: 5px;">
+                <div class="start-menu-item" data-action="shutdown">🔴 Shutdown</div>
+                <div class="start-menu-item" data-action="restart">🔄 Restart</div>
+                <div class="start-menu-item" data-action="lock">🔒 Lock</div>
+                <div class="start-menu-item" data-action="sleep">😴 Sleep</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Create Context Menu
+      const contextMenu = document.createElement('div');
+      contextMenu.className = 'context-menu';
+      contextMenu.innerHTML = `
+        <div class="context-menu-item" data-action="refresh">Refresh</div>
+        <div class="context-menu-separator"></div>
+        <div class="context-menu-item disabled">New Folder</div>
+        <div class="context-menu-separator"></div>
+        <div class="context-menu-item disabled">Personalize</div>
+        <div class="context-menu-item disabled">Properties</div>
+      `;
+
+      // Create Icon Context Menu
+      const iconContextMenu = document.createElement('div');
+      iconContextMenu.className = 'icon-context-menu';
+      iconContextMenu.innerHTML = `
+        <div class="context-menu-item" data-action="open">Open</div>
+        <div class="context-menu-item" data-action="run-admin">Run as Administrator</div>
+        <div class="context-menu-separator"></div>
+        <div class="context-menu-item" data-action="copy">Copy</div>
+        <div class="context-menu-item" data-action="move">Move to</div>
+        <div class="context-menu-separator"></div>
+        <div class="context-menu-item" data-action="properties">Properties</div>
+      `;
+      
+      // Create Selection Box
+      const selectionBox = document.createElement('div');
+      selectionBox.className = 'selection-box';
+      
+      // Create Shutdown Screen
+      const shutdownScreen = document.createElement('div');
+      shutdownScreen.className = 'shutdown-screen';
+
+      // Create Boot Screen
+      const bootScreen = document.createElement('div');
+      bootScreen.className = 'boot-screen';
+
+      // Create Application Image Overlay
+      const appImageOverlay = document.createElement('div');
+      appImageOverlay.className = 'app-image-overlay';
+      appImageOverlay.innerHTML = '<img id="appImage" src="" alt="Application" />';
+      
+      // Add click handler to close overlay
+      appImageOverlay.addEventListener('click', function() {
+        appImageOverlay.classList.remove('show');
+      });
+      
+      // Add click handler to Start button
+      const startButtonXP = taskbar.querySelector('#startButtonXP');
+      startButtonXP.addEventListener('click', function(e) {
+        e.stopPropagation();
+        startMenu.classList.toggle('show');
+      });
+      
+      // Add click handler to Billing Explorer taskbar button
+      const billingExplorerBtn = taskbar.querySelector('#billingExplorerTaskbar');
+      billingExplorerBtn.addEventListener('click', function() {
+        returnToMainInterface();
+      });
+      
+      desktop.appendChild(taskbar);
+      desktop.appendChild(startMenu);
+      desktop.appendChild(contextMenu);
+      desktop.appendChild(iconContextMenu);
+      desktop.appendChild(selectionBox);
+      desktop.appendChild(shutdownScreen);
+      desktop.appendChild(bootScreen);
+      desktop.appendChild(appImageOverlay);
+      document.body.appendChild(desktop);
+      
+      // Desktop event handlers
+      let isSelecting = false;
+      let startX, startY;
+      let selectedIcons = [];
+      
+      // Desktop click handlers
+      desktop.addEventListener('click', function(e) {
+        if (e.target === desktop) {
+          // Clear icon selections
+          selectedIcons.forEach(icon => icon.classList.remove('selected'));
+          selectedIcons = [];
+          
+          // Hide menus
+          startMenu.classList.remove('show');
+          contextMenu.classList.remove('show');
+          iconContextMenu.classList.remove('show');
+        }
+      });
+      
+      // Desktop right-click handler
+      desktop.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        if (e.target === desktop) {
+          contextMenu.style.left = e.clientX + 'px';
+          contextMenu.style.top = e.clientY + 'px';
+          contextMenu.classList.add('show');
+          startMenu.classList.remove('show');
+          iconContextMenu.classList.remove('show');
+        }
+      });
+      
+      // Desktop double-click handler
+      desktop.addEventListener('dblclick', function(e) {
+        if (e.target === desktop) {
+          // Refresh desktop
+          refreshDesktop();
+        }
+      });
+      
+      // Selection box functionality
+      desktop.addEventListener('mousedown', function(e) {
+        if (e.target === desktop && e.button === 0 && !isDragging) {
+          isSelecting = true;
+          startX = e.clientX;
+          startY = e.clientY;
+          
+          selectionBox.style.left = startX + 'px';
+          selectionBox.style.top = startY + 'px';
+          selectionBox.style.width = '0px';
+          selectionBox.style.height = '0px';
+          selectionBox.style.display = 'block';
+        }
+      });
+      
+      desktop.addEventListener('mousemove', function(e) {
+        if (isSelecting) {
+          const currentX = e.clientX;
+          const currentY = e.clientY;
+          
+          const left = Math.min(startX, currentX);
+          const top = Math.min(startY, currentY);
+          const width = Math.abs(currentX - startX);
+          const height = Math.abs(currentY - startY);
+          
+          selectionBox.style.left = left + 'px';
+          selectionBox.style.top = top + 'px';
+          selectionBox.style.width = width + 'px';
+          selectionBox.style.height = height + 'px';
+          
+          // Check icon intersections
+          const selectionRect = {
+            left: left,
+            top: top,
+            right: left + width,
+            bottom: top + height
+          };
+          
+          icons.forEach((iconData, index) => {
+            const iconElement = desktop.children[index];
+            const iconRect = iconElement.getBoundingClientRect();
+            
+            if (iconRect.left < selectionRect.right &&
+                iconRect.right > selectionRect.left &&
+                iconRect.top < selectionRect.bottom &&
+                iconRect.bottom > selectionRect.top) {
+              if (!selectedIcons.includes(iconElement)) {
+                selectedIcons.push(iconElement);
+                iconElement.classList.add('selected');
+              }
+            } else {
+              const index = selectedIcons.indexOf(iconElement);
+              if (index > -1) {
+                selectedIcons.splice(index, 1);
+                iconElement.classList.remove('selected');
+              }
+            }
+          });
+        }
+      });
+      
+      desktop.addEventListener('mouseup', function(e) {
+        if (isSelecting) {
+          isSelecting = false;
+          selectionBox.style.display = 'none';
+        }
+      });
+      
+      // Start menu item handlers
+      startMenu.addEventListener('click', function(e) {
+        const action = e.target.dataset.action;
+        if (action) {
+          handleSystemAction(action);
+          startMenu.classList.remove('show');
+        }
+      });
+      
+      // Context menu handlers
+      contextMenu.addEventListener('click', function(e) {
+        const action = e.target.dataset.action;
+        if (action === 'refresh') {
+          refreshDesktop();
+        }
+        contextMenu.classList.remove('show');
+      });
+
+      // Icon context menu handlers
+      iconContextMenu.addEventListener('click', function(e) {
+        const action = e.target.dataset.action;
+        if (action) {
+          // Get the selected icon name
+          const selectedIcon = selectedIcons[0];
+          let appName = 'Application';
+          if (selectedIcon) {
+            const iconLabel = selectedIcon.querySelector('.icon-label');
+            if (iconLabel) {
+              appName = iconLabel.textContent;
+            }
+          }
+          
+          if (action === 'open') {
+            showAppImage(appName);
+          } else {
+            showErrorDialog(appName);
+          }
+        }
+        iconContextMenu.classList.remove('show');
+      });
+      
+      // Icon click handlers with drag and drop
+      let isDragging = false;
+      let draggedIcon = null;
+      let dragStartX = 0;
+      let dragStartY = 0;
+      let dragOffsetX = 0;
+      let dragOffsetY = 0;
+      
+      // Grid settings for snapping
+      const gridSize = 150;
+      const gridOffsetX = 30;
+      const gridOffsetY = 30;
+      
+      icons.forEach((iconData, index) => {
+        const iconElement = desktop.children[index];
+        
+        iconElement.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          // Clear other selections
+          selectedIcons.forEach(icon => {
+            if (icon !== iconElement) icon.classList.remove('selected');
+          });
+          selectedIcons = [iconElement];
+          iconElement.classList.add('selected');
+        });
+
+        // Icon mousedown handler for drag start
+        iconElement.addEventListener('mousedown', function(e) {
+          if (e.button === 0) { // Left mouse button
+            e.preventDefault();
+            e.stopPropagation();
+            
+            isDragging = true;
+            draggedIcon = iconElement;
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+            
+            const rect = iconElement.getBoundingClientRect();
+            dragOffsetX = e.clientX - rect.left;
+            dragOffsetY = e.clientY - rect.top;
+            
+            iconElement.style.zIndex = '1002';
+            iconElement.style.opacity = '0.8';
+            iconElement.style.cursor = 'grabbing';
+            
+            // Select the icon being dragged
+            selectedIcons.forEach(icon => icon.classList.remove('selected'));
+            selectedIcons = [iconElement];
+            iconElement.classList.add('selected');
+          }
+        });
+
+        // Icon right-click handler
+        iconElement.addEventListener('contextmenu', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Select the icon if not already selected
+          if (!selectedIcons.includes(iconElement)) {
+            selectedIcons.forEach(icon => icon.classList.remove('selected'));
+            selectedIcons = [iconElement];
+            iconElement.classList.add('selected');
+          }
+          
+          // Show icon context menu
+          iconContextMenu.style.left = e.clientX + 'px';
+          iconContextMenu.style.top = e.clientY + 'px';
+          iconContextMenu.classList.add('show');
+          contextMenu.classList.remove('show');
+          startMenu.classList.remove('show');
+        });
+      });
+      
+      // Desktop mousemove handler for dragging
+      desktop.addEventListener('mousemove', function(e) {
+        if (isDragging && draggedIcon) {
+          e.preventDefault();
+          
+          const newX = e.clientX - dragOffsetX;
+          const newY = e.clientY - dragOffsetY;
+          
+          // Update icon position during drag
+          draggedIcon.style.left = newX + 'px';
+          draggedIcon.style.top = newY + 'px';
+        } else if (isSelecting) {
+          // Existing selection box code
+          const currentX = e.clientX;
+          const currentY = e.clientY;
+          
+          const left = Math.min(startX, currentX);
+          const top = Math.min(startY, currentY);
+          const width = Math.abs(currentX - startX);
+          const height = Math.abs(currentY - startY);
+          
+          selectionBox.style.left = left + 'px';
+          selectionBox.style.top = top + 'px';
+          selectionBox.style.width = width + 'px';
+          selectionBox.style.height = height + 'px';
+          
+          // Check icon intersections
+          const selectionRect = {
+            left: left,
+            top: top,
+            right: left + width,
+            bottom: top + height
+          };
+          
+          icons.forEach((iconData, index) => {
+            const iconElement = desktop.children[index];
+            const iconRect = iconElement.getBoundingClientRect();
+            
+            if (iconRect.left < selectionRect.right &&
+                iconRect.right > selectionRect.left &&
+                iconRect.top < selectionRect.bottom &&
+                iconRect.bottom > selectionRect.top) {
+              if (!selectedIcons.includes(iconElement)) {
+                selectedIcons.push(iconElement);
+                iconElement.classList.add('selected');
+              }
+            } else {
+              const index = selectedIcons.indexOf(iconElement);
+              if (index > -1) {
+                selectedIcons.splice(index, 1);
+                iconElement.classList.remove('selected');
+              }
+            }
+          });
+        }
+      });
+      
+      // Desktop mouseup handler for drag end
+      desktop.addEventListener('mouseup', function(e) {
+        if (isDragging && draggedIcon) {
+          e.preventDefault();
+          
+          // Snap to grid
+          const currentX = parseInt(draggedIcon.style.left);
+          const currentY = parseInt(draggedIcon.style.top);
+          
+          // Calculate nearest grid position
+          const gridX = Math.round((currentX - gridOffsetX) / gridSize) * gridSize + gridOffsetX;
+          const gridY = Math.round((currentY - gridOffsetY) / gridSize) * gridSize + gridOffsetY;
+          
+          // Ensure icon stays within desktop bounds
+          const maxX = window.innerWidth - 150;
+          const maxY = window.innerHeight - 200; // Account for taskbar
+          
+          const finalX = Math.max(gridOffsetX, Math.min(gridX, maxX));
+          const finalY = Math.max(gridOffsetY, Math.min(gridY, maxY));
+          
+          // Set final position
+          draggedIcon.style.left = finalX + 'px';
+          draggedIcon.style.top = finalY + 'px';
+          draggedIcon.style.zIndex = '';
+          draggedIcon.style.opacity = '';
+          draggedIcon.style.cursor = 'pointer';
+          
+          // Update icon data with new position
+          const iconIndex = Array.from(desktop.children).indexOf(draggedIcon);
+          if (iconIndex >= 0 && iconIndex < icons.length) {
+            icons[iconIndex].x = finalX;
+            icons[iconIndex].y = finalY;
+          }
+          
+          isDragging = false;
+          draggedIcon = null;
+        } else if (isSelecting) {
+          isSelecting = false;
+          selectionBox.style.display = 'none';
+        }
+      });
+      
+      // System action handler
+      function handleSystemAction(action) {
+        let message = '';
+        switch(action) {
+          case 'shutdown':
+            message = 'Shutting down...';
+            break;
+          case 'restart':
+            message = 'Restarting...';
+            break;
+          case 'lock':
+            message = 'Locking computer...';
+            break;
+          case 'sleep':
+            message = 'Going to sleep...';
+            break;
+        }
+        
+        shutdownScreen.textContent = message;
+        shutdownScreen.classList.add('show');
+        
+        setTimeout(() => {
+          shutdownScreen.classList.remove('show');
+          bootScreen.classList.add('show');
+          
+          setTimeout(() => {
+            bootScreen.classList.remove('show');
+            returnToMainInterface();
+          }, 2000);
+        }, 2000);
+      }
+      
+      // Refresh desktop function
+      function refreshDesktop() {
+        icons.forEach((iconData, index) => {
+          const iconElement = desktop.children[index];
+          iconElement.classList.add('refreshing');
+          
+          setTimeout(() => {
+            iconElement.classList.remove('refreshing');
+          }, 200);
+        });
+      }
+      
+      // Update clock every minute
+      setInterval(() => {
+        const clockElement = desktop.querySelector('.clock');
+        if (clockElement) {
+          clockElement.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+      }, 60000);
+    }
+
+    // Show application image function
+    function showAppImage(appName) {
+      const appImages = {
+        'Point Blank': 'https://cdn2.pointblank.id/Web/upload/image/20200603/7f78aa174812f0ce000aa3351ba5fcaae7ae9734ace860c0ed85c7b848d1ab2b.PNG',
+        'Lost Saga': 'https://forum.ragezone.com/attachments/screenshot-.-webp.236795/',
+        'Smadav': 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg-YOfEQ4PXps9HXCcGyWjxhHuQrv1dISf84vayUBQyhmbuhDgm8b_ICep1Je5Z3JH8MyzxUjhKUhwaGVwqI1K4h3gz70JIoXcu853F7ydV6BXleh-MnP_QOyXY3u4YqbATx59c0RnvlLA/s1600/smadav-2015-scanner.gif',
+        'Winamp': 'https://fudzilla.com/media/k2/items/cache/9c13ce42ec9f65e8a72e05aea4f3680e_XL.jpg',
+        'Paint': 'https://petapixel.com/assets/uploads/2017/07/windows95paint.jpg'
+      };
+      
+      if (appImages[appName]) {
+        const overlay = document.querySelector('.app-image-overlay');
+        const img = overlay.querySelector('#appImage');
+        img.src = appImages[appName];
+        overlay.classList.add('show');
+      } else {
+        showErrorDialog(appName);
+      }
+    }
+
+    // Show Windows XP style error dialog
+    function showErrorDialog(appName) {
+      // Remove existing dialog if any
+      const existingDialog = document.querySelector('.error-dialog');
+      if (existingDialog) {
+        existingDialog.remove();
+      }
+      
+      // Create error dialog
+      const dialog = document.createElement('div');
+      dialog.className = 'error-dialog show';
+      dialog.innerHTML = `
+        <div class="error-title-bar">
+          <span>${appName}</span>
+          <div class="error-close-btn">×</div>
+        </div>
+        <div class="error-content">
+          <div class="error-icon">⚠️</div>
+          <div class="error-message">
+            The application "${appName}" cannot be started.<br><br>
+            This program requires additional components that are not installed on this system.
+          </div>
+        </div>
+        <div class="error-buttons">
+          <button class="error-ok-btn">OK</button>
+        </div>
+      `;
+      
+      document.body.appendChild(dialog);
+      
+      // Add close event listeners
+      const closeBtn = dialog.querySelector('.error-close-btn');
+      const okBtn = dialog.querySelector('.error-ok-btn');
+      
+      function closeDialog() {
+        dialog.classList.remove('show');
+        setTimeout(() => {
+          if (dialog.parentNode) {
+            dialog.parentNode.removeChild(dialog);
+          }
+        }, 200);
+      }
+      
+      closeBtn.addEventListener('click', closeDialog);
+      okBtn.addEventListener('click', closeDialog);
+      
+      // Close dialog when clicking outside
+      dialog.addEventListener('click', function(e) {
+        if (e.target === dialog) {
+          closeDialog();
+        }
+      });
+    }
+
+    // Return to main interface function
+    function returnToMainInterface() {
+      // Remove Windows desktop
+      const desktop = document.querySelector('.windows-desktop');
+      if (desktop) {
+        desktop.remove();
+        
+        // Restore original interface immediately without animation
+        document.body.style.transition = 'none';
+        document.body.style.backgroundImage = 'url("img.png")';
+        document.body.style.padding = '20px';
+        document.body.style.display = 'flex';
+        
+        // Show original elements immediately
+        const interfaceContainer = document.querySelector('.interface-container');
+        const headerMockup = document.querySelector('.header-mockup');
+        
+        interfaceContainer.style.transition = 'none';
+        headerMockup.style.transition = 'none';
+        interfaceContainer.style.display = 'block';
+        headerMockup.style.display = 'block';
+        interfaceContainer.style.opacity = '1';
+        headerMockup.style.opacity = '1';
+      }
+    }
+
+    // Check orientation and device type
+    function checkOrientation() {
+      const notification = document.getElementById('landscapeNotification');
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+      const isPortrait = window.innerHeight > window.innerWidth;
+      
+      if (isMobile && isPortrait) {
+        notification.classList.add('show');
+      } else {
+        notification.classList.remove('show');
+      }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initMusic();
+      
+      // Add click handlers to all buttons
+      document.querySelectorAll('.button').forEach(button => {
+        button.addEventListener('click', function() {
+          selectButton(this);
+        });
+      });
+      
+      // Add click handler to start button
+      document.getElementById('startButton').addEventListener('click', startGame);
+      
+
+      
+      // Check orientation on load and resize
+      checkOrientation();
+      window.addEventListener('resize', checkOrientation);
+      window.addEventListener('orientationchange', function() {
+        setTimeout(checkOrientation, 100); // Small delay for orientation change
+      });
+    });
+
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      const defaultConfig = {
+        background_color: "#0bfdfc",
+        button_color: "#e5e5e5",
+        text_color: "#000000",
+        header_color: "#0000ff"
+      };
+
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          // Update colors based on config
+          const interfaceMockup = document.querySelector('.interface-mockup');
+          if (interfaceMockup) {
+            interfaceMockup.style.backgroundColor = config.background_color || defaultConfig.background_color;
+          }
+          
+          const buttons = document.querySelectorAll('.button');
+          buttons.forEach(button => {
+            button.style.backgroundColor = config.button_color || defaultConfig.button_color;
+            button.style.color = config.text_color || defaultConfig.text_color;
+          });
+          
+          const startButton = document.getElementById('startButton');
+          if (startButton) {
+            startButton.style.backgroundColor = config.button_color || defaultConfig.button_color;
+            startButton.style.color = config.text_color || defaultConfig.text_color;
+          }
+          
+          const headerBar = document.querySelector('.header-bar');
+          if (headerBar) {
+            headerBar.style.background = `linear-gradient(to bottom, ${config.header_color || defaultConfig.header_color} 0%, #000099 100%)`;
+          }
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.button_color || defaultConfig.button_color,
+              set: (value) => {
+                config.button_color = value;
+                window.elementSdk.setConfig({ button_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.header_color || defaultConfig.header_color,
+              set: (value) => {
+                config.header_color = value;
+                window.elementSdk.setConfig({ header_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map()
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f8079ec2d96d1c',t:'MTc2MzMwNzAyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
