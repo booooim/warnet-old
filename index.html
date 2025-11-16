@@ -307,65 +307,76 @@
             }
         }
 
-        /* Mobile Zoom Button */
-        .mobile-zoom-button {
+        /* Mobile Zoom Button - Fixed position that doesn't scale */
+        .mobile-zoom-area {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: 2px solid #0bfdfc;
+            top: 10px;
+            right: 10px;
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            border: none;
             border-radius: 50%;
-            display: none;
+            z-index: 10000;
+            cursor: pointer;
+            display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            z-index: 9998;
-            user-select: none;
-            transition: all 0.2s ease;
-            font-family: Arial, sans-serif;
+            color: transparent;
+            font-size: 24px;
             font-weight: bold;
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+            user-select: none;
+            opacity: 0;
+            /* PENTING: Tidak terpengaruh zoom body */
+            transform: none !important;
         }
 
-        .mobile-zoom-button:active {
-            background: rgba(0, 0, 0, 0.9);
-            transform: scale(0.95);
+        .mobile-zoom-area:hover {
+            background: rgba(11, 253, 252, 0.1);
+            opacity: 0.3;
         }
 
-        /* Show zoom button only on mobile portrait */
-        @media screen and (orientation: portrait) and (max-width: 768px) {
-            .mobile-zoom-button {
-                display: flex;
-            }
+        .mobile-zoom-area:active {
+            background: rgba(11, 253, 252, 0.2);
+            opacity: 0.5;
         }
 
-        /* Zoom levels */
-        .zoom-level-1 {
-            transform: scale(0.9);
+        /* Zoom levels with smooth transition */
+        body {
+            transition: transform 0.3s ease;
             transform-origin: top left;
         }
 
-        .zoom-level-2 {
-            transform: scale(0.8);
-            transform-origin: top left;
-        }
-
-        .zoom-level-3 {
-            transform: scale(0.7);
-            transform-origin: top left;
-        }
-
-        .zoom-level-4 {
+        body.zoom-level-1 {
             transform: scale(0.5);
-            transform-origin: top left;
         }
 
-        .zoom-level-0 {
+        body.zoom-level-2 {
+            transform: scale(0.7);
+        }
+
+        body.zoom-level-3 {
+            transform: scale(0.8);
+        }
+
+        body.zoom-level-4 {
+            transform: scale(0.9);
+        }
+
+        body.zoom-level-0 {
             transform: scale(1);
-            transform-origin: top left;
+        }
+
+        /* Pastikan zoom button tidak terpengaruh transformasi body */
+        body.zoom-level-1 .mobile-zoom-area,
+        body.zoom-level-2 .mobile-zoom-area,
+        body.zoom-level-3 .mobile-zoom-area,
+        body.zoom-level-4 .mobile-zoom-area {
+            transform: none !important;
+            position: fixed !important;
+            top: 10px !important;
+            right: 10px !important;
         }
 
 
@@ -959,9 +970,9 @@
    </div>
    <h2>Putar Layar Anda</h2>
    <p>Untuk pengalaman terbaik, silakan putar perangkat Anda ke mode landscape (horizontal).</p>
-  </div><!-- Mobile Zoom Button -->
-  <div class="mobile-zoom-button" id="mobileZoomButton">
-   -
+  </div><!-- Mobile Zoom Button - Visible zoom button -->
+  <div class="mobile-zoom-area" id="mobileZoomArea">
+   🔍
   </div>
   <script>
     let selectedButton = null;
@@ -1003,13 +1014,7 @@
       // Apply current zoom level
       document.body.classList.add(`zoom-level-${currentZoomLevel}`);
       
-      // Update button text based on zoom level
-      const zoomButton = document.getElementById('mobileZoomButton');
-      if (currentZoomLevel === 0) {
-        zoomButton.textContent = '-'; // Normal size, ready to zoom out
-      } else {
-        zoomButton.textContent = '+'; // Zoomed out, ready to zoom in or continue zooming out
-      }
+      console.log('Zoom level:', currentZoomLevel); // Debug log
     }
 
     // Button selection functionality
@@ -1787,13 +1792,53 @@
       // Add click handler to start button
       document.getElementById('startButton').addEventListener('click', startGame);
       
-      // Add click handler to mobile zoom button
-      const mobileZoomButton = document.getElementById('mobileZoomButton');
-      if (mobileZoomButton) {
-        mobileZoomButton.addEventListener('click', toggleZoom);
-        mobileZoomButton.addEventListener('touchstart', function(e) {
+      // Add click handler to mobile zoom area
+      const mobileZoomArea = document.getElementById('mobileZoomArea');
+      if (mobileZoomArea) {
+        let touchStarted = false;
+        
+        // Handle click events (desktop)
+        mobileZoomArea.addEventListener('click', function(e) {
           e.preventDefault();
-          toggleZoom();
+          e.stopPropagation();
+          if (!touchStarted) {
+            toggleZoom();
+          }
+        });
+        
+        // Handle touch events (mobile)
+        mobileZoomArea.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          touchStarted = true;
+        });
+        
+        mobileZoomArea.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (touchStarted) {
+            toggleZoom();
+            // Reset flag after a short delay
+            setTimeout(() => {
+              touchStarted = false;
+            }, 100);
+          }
+        });
+        
+        // Prevent context menu on long press
+        mobileZoomArea.addEventListener('contextmenu', function(e) {
+          e.preventDefault();
+        });
+        
+        // Handle mouse events to prevent conflicts
+        mobileZoomArea.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+        
+        mobileZoomArea.addEventListener('mouseup', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
         });
       }
       
@@ -1879,5 +1924,5 @@
       });
     }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f81c65c7551333',t:'MTc2MzMwNzg3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f82d8d45007d45',t:'MTc2MzMwODU4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
