@@ -307,78 +307,6 @@
             }
         }
 
-        /* Mobile Zoom Button - Fixed position that doesn't scale */
-        .mobile-zoom-area {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            width: 60px;
-            height: 60px;
-            background: transparent;
-            border: none;
-            border-radius: 50%;
-            z-index: 10000;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: transparent;
-            font-size: 24px;
-            font-weight: bold;
-            transition: background-color 0.3s ease, opacity 0.3s ease;
-            user-select: none;
-            opacity: 0;
-            /* PENTING: Tidak terpengaruh zoom body */
-            transform: none !important;
-        }
-
-        .mobile-zoom-area:hover {
-            background: rgba(11, 253, 252, 0.1);
-            opacity: 0.3;
-        }
-
-        .mobile-zoom-area:active {
-            background: rgba(11, 253, 252, 0.2);
-            opacity: 0.5;
-        }
-
-        /* Zoom levels with smooth transition */
-        body {
-            transition: transform 0.3s ease;
-            transform-origin: top left;
-        }
-
-        body.zoom-level-1 {
-            transform: scale(0.5);
-        }
-
-        body.zoom-level-2 {
-            transform: scale(0.7);
-        }
-
-        body.zoom-level-3 {
-            transform: scale(0.8);
-        }
-
-        body.zoom-level-4 {
-            transform: scale(0.9);
-        }
-
-        body.zoom-level-0 {
-            transform: scale(1);
-        }
-
-        /* Pastikan zoom button tidak terpengaruh transformasi body */
-        body.zoom-level-1 .mobile-zoom-area,
-        body.zoom-level-2 .mobile-zoom-area,
-        body.zoom-level-3 .mobile-zoom-area,
-        body.zoom-level-4 .mobile-zoom-area {
-            transform: none !important;
-            position: fixed !important;
-            top: 10px !important;
-            right: 10px !important;
-        }
-
 
 
         /* Windows XP Desktop Styles */
@@ -970,15 +898,11 @@
    </div>
    <h2>Putar Layar Anda</h2>
    <p>Untuk pengalaman terbaik, silakan putar perangkat Anda ke mode landscape (horizontal).</p>
-  </div><!-- Mobile Zoom Button - Visible zoom button -->
-  <div class="mobile-zoom-area" id="mobileZoomArea">
-   🔍
   </div>
   <script>
     let selectedButton = null;
     let musicPlaying = false;
     let backgroundMusic = null;
-    let currentZoomLevel = 0; // 0 = normal, 1-4 = zoom out levels
 
     // Initialize background music
     function initMusic() {
@@ -999,22 +923,6 @@
         });
         musicPlaying = true;
       }
-    }
-
-    // Mobile zoom functionality
-    function toggleZoom() {
-      currentZoomLevel++;
-      if (currentZoomLevel > 4) {
-        currentZoomLevel = 0; // Reset to normal after 5th click
-      }
-      
-      // Remove all zoom classes
-      document.body.classList.remove('zoom-level-0', 'zoom-level-1', 'zoom-level-2', 'zoom-level-3', 'zoom-level-4');
-      
-      // Apply current zoom level
-      document.body.classList.add(`zoom-level-${currentZoomLevel}`);
-      
-      console.log('Zoom level:', currentZoomLevel); // Debug log
     }
 
     // Button selection functionality
@@ -1792,55 +1700,7 @@
       // Add click handler to start button
       document.getElementById('startButton').addEventListener('click', startGame);
       
-      // Add click handler to mobile zoom area
-      const mobileZoomArea = document.getElementById('mobileZoomArea');
-      if (mobileZoomArea) {
-        let touchStarted = false;
-        
-        // Handle click events (desktop)
-        mobileZoomArea.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (!touchStarted) {
-            toggleZoom();
-          }
-        });
-        
-        // Handle touch events (mobile)
-        mobileZoomArea.addEventListener('touchstart', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          touchStarted = true;
-        });
-        
-        mobileZoomArea.addEventListener('touchend', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (touchStarted) {
-            toggleZoom();
-            // Reset flag after a short delay
-            setTimeout(() => {
-              touchStarted = false;
-            }, 100);
-          }
-        });
-        
-        // Prevent context menu on long press
-        mobileZoomArea.addEventListener('contextmenu', function(e) {
-          e.preventDefault();
-        });
-        
-        // Handle mouse events to prevent conflicts
-        mobileZoomArea.addEventListener('mousedown', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-        });
-        
-        mobileZoomArea.addEventListener('mouseup', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-        });
-      }
+
       
       // Check orientation on load and resize
       checkOrientation();
@@ -1924,5 +1784,5 @@
       });
     }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f82d8d45007d45',t:'MTc2MzMwODU4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f8079ec2d96d1c',t:'MTc2MzMwNzAyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
